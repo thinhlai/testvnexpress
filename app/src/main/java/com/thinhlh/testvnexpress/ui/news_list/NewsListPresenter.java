@@ -46,11 +46,11 @@ public class NewsListPresenter extends BasePresenter<NewsListView> {
         getView().showLoading();
         Disposable disposable = mDataManager.getNews()
                 .subscribeOn(Schedulers.io())
-                .filter(rssRoot -> {
+                .map(rssRoot -> {
                     if (rssRoot != null) {
                         rssRoot.parseDescription();
                     }
-                    return true;
+                    return rssRoot;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally(() -> {
